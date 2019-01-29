@@ -37,11 +37,11 @@ public class Node {
 
     public void updateNode(){
 
-        System.out.println("updateNode()....");
-        System.out.println("updatedVoltage: " + voltage.abs() + " Ang.:" + Math.toDegrees(voltage.log().getImaginary()));
-        System.out.println("----------------------------------------------------------");
-        System.out.println(voltage);
-        System.out.println("----------------------------------------------------------");
+//        System.out.println("updateNode()....");
+//        System.out.println("updatedVoltage: " + voltage.abs() + " Ang.:" + Math.toDegrees(voltage.log().getImaginary()));
+//        System.out.println("----------------------------------------------------------");
+//        System.out.println(voltage);
+//        System.out.println("----------------------------------------------------------");
 
 //        Complex previousPower = power;
 //        System.out.println("previousPower:" + previousPower);
@@ -49,9 +49,9 @@ public class Node {
 //        System.out.println("[" + previousPower.abs() + " < " + previousPower.acos() + "]");
 //        System.out.println("---------------------------------");
         this.injectedCurrent = this.power.divide(this.voltage).conjugate();
-        System.out.println("injectedCurrent: " + injectedCurrent);
+//        System.out.println("injectedCurrent: " + injectedCurrent);
         this.currentFlow = new Complex(this.injectedCurrent.getReal(), this.injectedCurrent.getImaginary());
-        System.out.println("currentFlow:" + currentFlow);
+//        System.out.println("currentFlow:" + currentFlow);
 
 //        this.power = this.voltage.multiply(this.injectedCurrent).conjugate();
 //        System.out.println("updatedPower:" + power);
@@ -62,11 +62,11 @@ public class Node {
 
 
 
-        System.out.println("checkedConvergence: " + checkedConvergence);
+//        System.out.println("checkedConvergence: " + checkedConvergence);
 
         this.convergedNode = (checkedConvergence <=  0.0002);
 
-        System.out.println("convergedNode: " + convergedNode);
+//        System.out.println("convergedNode: " + convergedNode);
 
 //        branch.getDestiny().setInjectedCurrent(branch.getDestiny().getPower().divide(branch.getDestiny().getVoltage()).conjugate());
 //
@@ -79,8 +79,8 @@ public class Node {
     }
 
     public void setPreviousVoltage(Double previousVoltage) {
-        System.out.println("setPreviousVoltage...");
-        System.out.println("previousVoltage: " + previousVoltage);
+//        System.out.println("setPreviousVoltage...");
+//        System.out.println("previousVoltage: " + previousVoltage);
         this.previousVoltage = previousVoltage;
     }
 

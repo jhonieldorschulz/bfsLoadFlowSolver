@@ -164,6 +164,7 @@ public class BFSTests2 {
         BFS bfs = new BFS(branches, nodes);
 
         bfs.setMaxIterarions(50);
+
 //
         bfs.iteratePowerFlow();
 
@@ -224,6 +225,7 @@ public class BFSTests2 {
         BFS bfs = new BFS(branches, nodes);
 
         bfs.setMaxIterarions(10);
+        bfs.setPrintIterations(false);
 
         bfs.iteratePowerFlow();
 

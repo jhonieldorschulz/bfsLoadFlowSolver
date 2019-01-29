@@ -16,7 +16,9 @@ public class BFS {
     private List<Node> nodes = new ArrayList<>();
 
     private Boolean converge = false;
+    private Boolean printIterations = true;
     private Integer iterations = 0;
+
 
     private Integer maxIterarions;
 
@@ -36,8 +38,11 @@ public class BFS {
     }
 
     public void backward() {
-        System.out.println("BACKWARD");
-        System.out.println("-----------------------------------------------------------------");
+        if(printIterations){
+            System.out.println("BACKWARD");
+            System.out.println("-----------------------------------------------------------------");
+        }
+
         for (int i = layers.size() - 1; i >= 0; i--) {
             layers.get(i).getBranches().forEach(branch -> {
                 branch.getOrigin().setCurrentFlow(
@@ -47,42 +52,51 @@ public class BFS {
                         branch.getDestiny().getCurrentFlow().getImaginary()));
                 branch.setIZ(branch.getCurrent().multiply(branch.getImpedance()));
 
-                System.out.println("-------------------------------");
-                System.out.println("Branch: " + branch.getOrigin().getNumber() + " ---> " + branch.getDestiny().getNumber());
+                if (printIterations) {
+                    System.out.println("-------------------------------");
+                    System.out.println("Branch: " + branch.getOrigin().getNumber() + " ---> " + branch.getDestiny().getNumber());
 
-                System.out.println("Current:");
-                System.out.println("-------------------------------------------");
-                System.out.println("current.abs():" + branch.getCurrent().abs());
-                System.out.println("current.getReal():" + branch.getCurrent().getReal());
-                System.out.println("current.getImag():" + branch.getCurrent().getImaginary());
-                System.out.println("current.AngRad():" + branch.getCurrent().log().getImaginary());
-                System.out.println("current.AngDeg():" + Math.toDegrees(branch.getCurrent().log().getImaginary()));
+                    System.out.println("Current:");
+                    System.out.println("-------------------------------------------");
+                    System.out.println("current.abs():" + branch.getCurrent().abs());
+                    System.out.println("current.getReal():" + branch.getCurrent().getReal());
+                    System.out.println("current.getImag():" + branch.getCurrent().getImaginary());
+                    System.out.println("current.AngRad():" + branch.getCurrent().log().getImaginary());
+                    System.out.println("current.AngDeg():" + Math.toDegrees(branch.getCurrent().log().getImaginary()));
 
-                System.out.println("IZ:");
-                System.out.println("-------------------------------------------");
-                System.out.println("iz.abs():" + branch.getIZ().abs());
-                System.out.println("iz.getReal():" + branch.getIZ().getReal());
-                System.out.println("iz.getImag():" + branch.getIZ().getImaginary());
-                System.out.println("iz.AngRad():" + branch.getIZ().log().getImaginary());
-                System.out.println("iz.AngDeg():" + Math.toDegrees(branch.getIZ().log().getImaginary()));
+                    System.out.println("IZ:");
+                    System.out.println("-------------------------------------------");
+                    System.out.println("iz.abs():" + branch.getIZ().abs());
+                    System.out.println("iz.getReal():" + branch.getIZ().getReal());
+                    System.out.println("iz.getImag():" + branch.getIZ().getImaginary());
+                    System.out.println("iz.AngRad():" + branch.getIZ().log().getImaginary());
+                    System.out.println("iz.AngDeg():" + Math.toDegrees(branch.getIZ().log().getImaginary()));
+                }
+
             });
         }
     }
 
     public void forward() {
-        System.out.println("FORWARD");
-        System.out.println("-----------------------------------------------------------------");
+        if (printIterations) {
+            System.out.println("FORWARD");
+            System.out.println("-----------------------------------------------------------------");
+        }
+
         layers.forEach(layer -> {
             layer.getBranches().forEach(branch -> {
-                System.out.println(branch.getOrigin().getNumber() + " ---> " + branch.getDestiny().getNumber());
-                System.out.println("branch.getOrigin().getVoltage():" + branch.getOrigin().getVoltage());
-                System.out.println("branch.getIZ():" + branch.getIZ());
-                System.out.println("branch.getCurrent():" + branch.getCurrent());
+                if(printIterations){
+                    System.out.println(branch.getOrigin().getNumber() + " ---> " + branch.getDestiny().getNumber());
+                    System.out.println("branch.getOrigin().getVoltage():" + branch.getOrigin().getVoltage());
+                    System.out.println("branch.getIZ():" + branch.getIZ());
+                    System.out.println("branch.getCurrent():" + branch.getCurrent());
 
-                System.out.println("-------------------------------------------------");
-                System.out.println("abs: " + branch.getCurrent().abs() + " ang.: " + Math.toDegrees(branch.getCurrent().log().getImaginary()));
-                System.out.println("-------------------------------------------------");
-                System.out.println("branch.getImpedance()" + branch.getImpedance());
+                    System.out.println("-------------------------------------------------");
+                    System.out.println("abs: " + branch.getCurrent().abs() + " ang.: " + Math.toDegrees(branch.getCurrent().log().getImaginary()));
+                    System.out.println("-------------------------------------------------");
+                    System.out.println("branch.getImpedance()" + branch.getImpedance());
+                }
+
                 branch.getDestiny().setPreviousVoltage(branch.getDestiny().getVoltage().abs());
                 branch.getDestiny().setVoltage(branch.getOrigin().getVoltage().subtract(branch.getIZ()));
                 branch.getDestiny().updateNode();
@@ -96,23 +110,37 @@ public class BFS {
 //                System.out.println("branch.getDestiny().getInjectedCurrent():" + branch.getDestiny().getInjectedCurrent());
             });
         });
-        System.out.println("-----------------------------------------------------------------");
+        if(printIterations){
+            System.out.println("-----------------------------------------------------------------");
+        }
+
     }
 
     public void iteratePowerFlow() {
 //
-        while (!this.converge && iterations < maxIterarions) {
-            System.out.println("\n########################################################################");
-            System.out.println("\nIteração: " + (iterations + 1));
-            System.out.println("-------------------------------------");
-            backward();
-            forward();
-            checkIteration();
+        while (!this.converge) {
             if (!converge) {
+                if (printIterations) {
+                    System.out.println("\n########################################################################");
+                    System.out.println("\nIteração: " + (iterations + 1));
+                    System.out.println("-------------------------------------");
+                }
+
+                backward();
+                forward();
+                checkIteration();
+
                 iterations++;
+                if (iterations.equals(maxIterarions)) {
+                    break;
+                }
+            } else {
+                break;
+            }
+            if(printIterations){
+                System.out.println("-------------------------------------");
             }
 
-            System.out.println("-------------------------------------");
         }
 
         System.out.println("----------------------------------------------------");
@@ -179,20 +207,25 @@ public class BFS {
     public void checkIteration() {
 
         nodes.forEach(node -> {
-            System.out.println("Node: " + node.getNumber());
-            System.out.println("----------------------------------");
-            System.out.println("Voltage:" + node.getVoltage());
-            System.out.println("---------------------------------------------");
-            System.out.println("abs.: " + node.getVoltage().abs() + " Ang. Deg.:" + Math.toDegrees(node.getVoltage().log().getImaginary()));
-            System.out.println("abs.: " + node.getVoltage().abs() + " log.:" + node.getVoltage().log());
-            System.out.println("abs.: " + node.getVoltage().abs() + " acos.:" + node.getVoltage().acos());
-            System.out.println("abs.: " + node.getVoltage().abs() + " atan.:" + node.getVoltage().atan());
-            System.out.println("abs.: " + node.getVoltage().abs() + " Math.atan.:" + Math.atan(node.getVoltage().getReal() / node.getVoltage().getReal()));
-            System.out.println("---------------------------------------------");
-            System.out.println("Current Flow:" + node.getCurrentFlow());
+            if (printIterations) {
+                System.out.println("Node: " + node.getNumber());
+                System.out.println("----------------------------------");
+                System.out.println("Voltage:" + node.getVoltage());
+                System.out.println("---------------------------------------------");
+                System.out.println("abs.: " + node.getVoltage().abs() + " Ang. Deg.:" + Math.toDegrees(node.getVoltage().log().getImaginary()));
+                System.out.println("abs.: " + node.getVoltage().abs() + " log.:" + node.getVoltage().log());
+                System.out.println("abs.: " + node.getVoltage().abs() + " acos.:" + node.getVoltage().acos());
+                System.out.println("abs.: " + node.getVoltage().abs() + " atan.:" + node.getVoltage().atan());
+                System.out.println("abs.: " + node.getVoltage().abs() + " Math.atan.:" + Math.atan(node.getVoltage().getReal() / node.getVoltage().getReal()));
+                System.out.println("---------------------------------------------");
+                System.out.println("Current Flow:" + node.getCurrentFlow());
+            }
             node.setInjectedCurrent(node.getPower().divide(node.getVoltage()).conjugate());
             node.setCurrentFlow(new Complex(node.getInjectedCurrent().getReal(), node.getInjectedCurrent().getImaginary()));
-            System.out.println("Injected Current:" + node.getInjectedCurrent());
+            if (printIterations) {
+                System.out.println("Injected Current:" + node.getInjectedCurrent());
+            }
+
 
         });
 
@@ -200,7 +233,9 @@ public class BFS {
         convergedNodes = nodes.stream()
                 .filter(node -> node.getConvergedNode()).collect(Collectors.toList());
 
-        System.out.println("Converged Nodes:" + convergedNodes.size());
+        if (printIterations) {
+            System.out.println("Converged Nodes:" + convergedNodes.size());
+        }
 
 
         this.converge = (convergedNodes.size() == (nodes.size() - 1));
@@ -212,5 +247,10 @@ public class BFS {
 
     public void setMaxIterarions(Integer maxIterarions) {
         this.maxIterarions = maxIterarions;
+    }
+
+
+    public void setPrintIterations(Boolean printIterations) {
+        this.printIterations = printIterations;
     }
 }
