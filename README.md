@@ -27,7 +27,7 @@ This method is commonly used in power distribution networks to ensure proper vol
    ```
 2. Navigate to the project directory:
    ```bash
-   cd stForFv
+   cd bfsLoadFlowSolver
    ```
 3. Compile the project using Maven:
    ```bash
