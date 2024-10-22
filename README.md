@@ -1,7 +1,3 @@
-Aqui está uma versão atualizada do README, incluindo a contextualização solicitada:
-
----
-
 # stForFv
 
 Este é um projeto Java desenvolvido para facilitar o cálculo de **substituição tributária** (ST) em diferentes cenários fiscais, sendo ideal para integração em projetos de **APIs** e aplicativos **Android**.
